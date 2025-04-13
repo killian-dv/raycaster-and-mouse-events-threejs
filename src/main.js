@@ -1,6 +1,6 @@
+import GUI from "lil-gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import GUI from "lil-gui";
 
 /**
  * Base
@@ -40,10 +40,14 @@ scene.add(object1, object2, object3);
  * Raycaster
  */
 const raycaster = new THREE.Raycaster();
-const rayOrigin = new THREE.Vector3(-3, 0, 0);
-const rayDirection = new THREE.Vector3(10, 0, 0);
-rayDirection.normalize(); // Normalize the direction vector to have a length of 1
-raycaster.set(rayOrigin, rayDirection);
+// const rayOrigin = new THREE.Vector3(-3, 0, 0);
+// const rayDirection = new THREE.Vector3(10, 0, 0);
+// rayDirection.normalize(); // Normalize the direction vector to have a length of 1
+// raycaster.set(rayOrigin, rayDirection);
+
+// const intersect = raycaster.intersectObject(object1);
+
+// const intersects = raycaster.intersectObjects([object1, object2, object3]);
 
 /**
  * Sizes
@@ -100,6 +104,27 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // animate the objects
+  object1.position.y = Math.sin(elapsedTime * 0.3) * 1.5;
+  object2.position.y = Math.sin(elapsedTime * 0.9) * 1.5;
+  object3.position.y = Math.sin(elapsedTime * 1.5) * 1.5;
+
+  // raycaster
+  const rayOrigin = new THREE.Vector3(-3, 0, 0);
+  const rayDirection = new THREE.Vector3(1, 0, 0);
+  rayDirection.normalize(); // Normalize the direction vector to have a length of 1
+  raycaster.set(rayOrigin, rayDirection);
+
+  const spheres = [object1, object2, object3];
+  const intersects = raycaster.intersectObjects(spheres);
+
+  for (const sphere of spheres) {
+    sphere.material.color.set("#ff0000");
+  }
+  for (const intersect of intersects) {
+    intersect.object.material.color.set("#0000ff");
+  }
 
   // Update controls
   controls.update();
