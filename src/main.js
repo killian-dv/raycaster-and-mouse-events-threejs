@@ -1,6 +1,7 @@
 import GUI from "lil-gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
  * Base
@@ -122,6 +123,25 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+/**
+ * Model
+ */
+const gltfLoader = new GLTFLoader();
+gltfLoader.load("./models/Duck/glTF-Binary/Duck.glb", (gltf) => {
+  gltf.scene.position.y = -1.2;
+  scene.add(gltf.scene);
+});
+
+/**
+ * Lights
+ */
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2.1);
+directionalLight.position.set(1, 2, 3);
+scene.add(directionalLight);
 
 /**
  * Animate
