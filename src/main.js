@@ -128,7 +128,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Model
  */
 const gltfLoader = new GLTFLoader();
+let model = null;
 gltfLoader.load("./models/Duck/glTF-Binary/Duck.glb", (gltf) => {
+  model = gltf.scene;
   gltf.scene.position.y = -1.2;
   scene.add(gltf.scene);
 });
@@ -181,6 +183,15 @@ const tick = () => {
       console.log("mouse leave");
     }
     currentIntersect = null;
+  }
+
+  if (model) {
+    const modelIntersects = raycaster.intersectObject(model);
+    if (modelIntersects.length) {
+      model.scale.set(1.2, 1.2, 1.2);
+    } else {
+      model.scale.set(1, 1, 1);
+    }
   }
 
   // Update controls
